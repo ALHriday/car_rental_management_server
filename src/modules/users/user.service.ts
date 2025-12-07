@@ -1,0 +1,39 @@
+import { pool } from "../../config/db"
+import bcrypt from "bcrypt"
+
+const getUser = async () => {
+    const result = await pool.query(
+        `SELECT * FROM users`
+    )
+    return result;
+}
+
+
+const updateUser = async (payload: Record<string, unknown>, id: string) => {
+    const { name, email, password, phone, role } = payload;
+
+    const hashedPass = await bcrypt.hash(password as string, 10);
+
+    const result = await pool.query(
+        ` UPDATE users SET name=$1, email=$2, password=$3, phone=$4, role=$5 WHERE id=$6 RETURNING *
+            `,
+        [name, email, hashedPass, phone, role, id]
+    );
+    return result;
+}
+
+
+const deleteUser = async (id: string) => {
+    const result = await pool.query(
+        ` DELETE FROM users WHERE id = $1
+            `,
+        [id]
+    );
+    return result;
+}
+
+export const userServices = {
+    getUser,
+    updateUser,
+    deleteUser,
+}

@@ -1,0 +1,111 @@
+import { Request, Response } from "express";
+import { pool } from "../../config/db";
+import { userServices } from "./user.service";
+
+const getUser = async (req: Request, res: Response) => {
+    try {
+        const result = await userServices.getUser();
+
+        if (result.rows.length === 0) {
+            res.status(200).json({
+                success: true,
+                message: "No Data Found!",
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                message: "Successful",
+                data: result.rows,
+            });
+        }
+
+    } catch (error: any) {
+        res.status(500).send({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+
+// const createUser = async (req: Request, res: Response) => {
+
+//     try {
+//         const result = await userServices.createUser(req.body);
+
+//         res.status(201).json({
+//             success: true,
+//             message: "Data Inserted Successfully",
+//             data: result.rows[0],
+//         });
+
+//     } catch (error: any) {
+//         res.status(500).send({
+//             success: false,
+//             message: error.message
+//         });
+//     }
+// };
+
+
+const updateUser = async (req: Request, res: Response) => {
+    const id = req.params?.id;
+    try {
+        const result = await userServices.updateUser(req.body, id as string);
+
+        if (result.rows.length === 0) {
+            res.status(404).json({
+                success: false,
+                message: "User Not Found.",
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                message: "User Updated Successfully.",
+                data: result.rows[0],
+            });
+        }
+
+
+    } catch (error: any) {
+        res.status(500).send({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+
+const deleteUser = async (req: Request, res: Response) => {
+    const id = req.params?.id;
+    try {
+        const result = await userServices.deleteUser(id as string);
+
+        if (result.rows.length === 0) {
+            res.status(404).json({
+                success: false,
+                message: "Data Not Found.",
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                message: "Deleted Successfully.",
+                data: null,
+            });
+        }
+
+    } catch (error: any) {
+        res.status(500).send({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+
+export const userControllers = {
+    getUser,
+    updateUser,
+    deleteUser
+}
+
