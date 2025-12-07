@@ -14,7 +14,7 @@ const getUser = async (req: Request, res: Response) => {
         } else {
             res.status(200).json({
                 success: true,
-                message: "Successful",
+                message: "Users retrieved successfully",
                 data: result.rows,
             });
         }
@@ -26,26 +26,6 @@ const getUser = async (req: Request, res: Response) => {
         });
     }
 }
-
-
-// const createUser = async (req: Request, res: Response) => {
-
-//     try {
-//         const result = await userServices.createUser(req.body);
-
-//         res.status(201).json({
-//             success: true,
-//             message: "Data Inserted Successfully",
-//             data: result.rows[0],
-//         });
-
-//     } catch (error: any) {
-//         res.status(500).send({
-//             success: false,
-//             message: error.message
-//         });
-//     }
-// };
 
 
 const updateUser = async (req: Request, res: Response) => {
