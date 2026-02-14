@@ -29,11 +29,18 @@ const getUser = async (req: Request, res: Response) => {
 
 
 const updateUser = async (req: Request, res: Response) => {
-    const id = req.params?.id;
-    try {
-        const result = await userServices.updateUser(req.body, id as string);
+    const userId = req.params?.userId;
+    const currentUserId = req.user?.id;
+    const currentUserRole = req.user?.role;
 
-        if (result.rows.length === 0) {
+    try {
+        const result = await userServices.updateUser(req.body, userId as string, currentUserId as string, currentUserRole as string);
+
+        if (!req.user) {
+            throw new Error('unAuthorized');
+        }
+
+        if (result?.rows.length === 0) {
             res.status(404).json({
                 success: false,
                 message: "User Not Found.",
@@ -42,7 +49,7 @@ const updateUser = async (req: Request, res: Response) => {
             res.status(200).json({
                 success: true,
                 message: "User Updated Successfully.",
-                data: result.rows[0],
+                data: result?.rows[0],
             });
         }
 
@@ -57,9 +64,9 @@ const updateUser = async (req: Request, res: Response) => {
 
 
 const deleteUser = async (req: Request, res: Response) => {
-    const id = req.params?.id;
+    const userId = req.params?.id;
     try {
-        const result = await userServices.deleteUser(id as string);
+        const result = await userServices.deleteUser(userId as string);
 
         if (result.rows.length === 0) {
             res.status(404).json({

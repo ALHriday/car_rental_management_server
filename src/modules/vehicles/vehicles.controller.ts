@@ -20,14 +20,15 @@ const createVehicles = async (req: Request, res: Response) => {
     }
 };
 
-const getVehicles = async (req: Request, res: Response) => {
+const getAllVehicles = async (req: Request, res: Response) => {
     try {
-        const result = await vehiclesServices.getVehicles();
+        const result = await vehiclesServices.getAllVehicles();
 
         if (result.rows.length === 0) {
             res.status(200).json({
                 success: true,
                 message: "No Vehicles Found!",
+                data: []
             });
         } else {
             res.status(200).json({
@@ -46,14 +47,15 @@ const getVehicles = async (req: Request, res: Response) => {
 }
 
 const getSingleVehicle = async (req: Request, res: Response) => {
-    const id = req.params.id;
+    const vehicleId = req.params?.vehicleId;
     try {
-        const result = await vehiclesServices.getSingleVehicle(id as string);
+        const result = await vehiclesServices.getSingleVehicle(vehicleId as string);
 
         if (result.rows.length === 0) {
             res.status(200).json({
                 success: true,
                 message: "No Data Found!",
+                data: []
             });
         } else {
             res.status(200).json({
@@ -72,9 +74,9 @@ const getSingleVehicle = async (req: Request, res: Response) => {
 }
 
 const updateVehicles = async (req: Request, res: Response) => {
-    const id = req.params?.id;
+    const vehicleId = req.params?.vehicleId;
     try {
-        const result = await vehiclesServices.updateVehicles(req.body, id as string);
+        const result = await vehiclesServices.updateVehicles(req.body, vehicleId as string);
 
         if (result.rows.length === 0) {
             res.status(404).json({
@@ -98,12 +100,12 @@ const updateVehicles = async (req: Request, res: Response) => {
     }
 };
 
-const deleteUser = async (req: Request, res: Response) => {
-    const id = req.params?.id;
+const deleteVehicle = async (req: Request, res: Response) => {
+    const vehicleId = req.params?.vehicleId;
     try {
-        const result = await vehiclesServices.deleteVehicle(id as string);
+        const result = await vehiclesServices.deleteVehicle(vehicleId as string);
 
-        if (result.rows.length === 0) {
+        if (!result) {
             res.status(404).json({
                 success: false,
                 message: "Data Not Found.",
@@ -127,8 +129,8 @@ const deleteUser = async (req: Request, res: Response) => {
 
 export const vehiclesController = {
     createVehicles,
-    getVehicles,
+    getAllVehicles,
     getSingleVehicle,
     updateVehicles,
-    deleteUser,
+    deleteVehicle
 }

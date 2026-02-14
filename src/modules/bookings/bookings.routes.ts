@@ -1,13 +1,13 @@
 import express from "express"
 import auth from "../../middleware/auth";
 import { bookingsController } from "./bookings.controller";
+import { ROLE } from "../../types/role.enum";
 
 const router = express.Router();
 
-router.get('/bookings', auth('admin'), bookingsController.getBookings);
-router.get('/bookings', auth('customer'), bookingsController.getBookingCustomer);
-router.post('/bookings', bookingsController.createBooking);
-router.put('/bookings/:id', auth('admin', 'customer'), bookingsController.updateBooking);
+router.post('/bookings', auth(ROLE.CUSTOMER, ROLE.ADMIN), bookingsController.createBooking);
+router.get('/bookings', auth(ROLE.ADMIN, ROLE.CUSTOMER), bookingsController.getBookings);
+router.put('/bookings/:bookingId', auth(ROLE.CUSTOMER, ROLE.ADMIN), bookingsController.updateBooking);
 
 
 export const bookingsRoutes = router;

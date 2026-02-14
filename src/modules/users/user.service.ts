@@ -1,5 +1,6 @@
 import { pool } from "../../config/db"
 import bcrypt from "bcrypt"
+import { ROLE } from "../../types/role.enum";
 
 const getUser = async () => {
     const result = await pool.query(
@@ -9,24 +10,49 @@ const getUser = async () => {
 }
 
 
-const updateUser = async (payload: Record<string, unknown>, id: string) => {
+const updateUser = async (payload: Record<string, unknown>, userId: string, currentUserId: string, currentUserRole: string) => {
     const { name, email, password, phone, role } = payload;
 
-    const hashedPass = await bcrypt.hash(password as string, 10);
 
-    const result = await pool.query(
-        ` UPDATE users SET name=$1, email=$2, password=$3, phone=$4, role=$5 WHERE id=$6 RETURNING *
+    if (currentUserRole === ROLE.CUSTOMER && String(currentUserId) !== String(userId)) {
+        throw new Error("You can't update this profile!");
+    }
+
+    let hashedPass: string | undefined;
+    if (password) {
+        hashedPass = await bcrypt.hash(password as string, 10);
+    }
+
+    try {
+
+        if (currentUserRole === ROLE.ADMIN) {
+            const result = await pool.query(
+                ` UPDATE users SET name=$1, email=$2, password=$3, phone=$4, role=$5 WHERE id=$6 RETURNING *
             `,
-        [name, email, hashedPass, phone, role, id]
-    );
-    return result;
+                [name, email, hashedPass, phone, role, userId]
+            );
+            return result;
+
+        }
+
+        const result = await pool.query(
+            ` UPDATE users SET name=$1, email=$2, password=$3, phone=$4 WHERE id=$5 RETURNING *
+            `,
+            [name, email, hashedPass, phone, userId]
+        );
+        return result;
+
+    } catch (err) {
+        throw err;
+    }
+
 }
 
-const deleteUser = async (id: string) => {
+const deleteUser = async (userId: string) => {
     const result = await pool.query(
         ` DELETE FROM users WHERE id = $1
             `,
-        [id]
+        [userId]
     );
     return result;
 }

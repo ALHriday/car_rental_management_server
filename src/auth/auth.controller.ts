@@ -23,13 +23,22 @@ const createUser = async (req: Request, res: Response) => {
 const loginUser = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     try {
+
         const result = await authServices.login(email, password);
 
+        if (!result) {
+            res.status(401).json({
+                success: false,
+                message: "LogIn unSuccessful!",
+                data: [],
+            })
+        }
         res.status(200).json({
             success: true,
             message: "LogIn Successful.",
             data: result,
         });
+
 
     } catch (error: any) {
         res.status(500).send({

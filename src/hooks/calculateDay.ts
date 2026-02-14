@@ -5,7 +5,7 @@ const calculateNumberOfDay = (startTime: Date, endTime: Date) => {
     const endDate = new Date(endTime).getTime();
 
     const result = endDate - startDate;
-    const numberOfDays = Math.ceil(result / (1000 * 60 * 60 * 24));
+    const numberOfDays: number = Math.ceil(result / (1000 * 60 * 60 * 24));
 
     return numberOfDays;
 };

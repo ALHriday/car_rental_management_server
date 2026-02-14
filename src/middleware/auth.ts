@@ -4,7 +4,7 @@ import config from "../config";
 
 const auth = (...roles: string[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {
-        const authHeaders = req.headers.authorization;
+        const authHeaders = req.headers?.authorization;
 
         if (!authHeaders) {
             return res.status(401).json({ message: 'unAuthorized' });
@@ -19,12 +19,12 @@ const auth = (...roles: string[]) => {
             req.user = decoded;
 
             if (roles.length && !roles.includes(decoded?.role)) {
-                res.status(401).json({ message: "unAuthorized" })
+                return res.status(403).json({ message: "unAuthorized" })
             }
 
             next();
         } catch (error: any) {
-            res.status(500).json({ status: false, message: error.message });
+            res.status(401).json({ status: false, message: error.message });
         }
     }
 }
