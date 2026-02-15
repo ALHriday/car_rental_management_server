@@ -50,9 +50,10 @@ Customer can:
 - Create booking
 - Cancel booking
 - View own bookings
+  
 Admin can:
 - View all bookings
-- Update booking status:
+- Update booking status
    - active
    - returned
    - cancelled
@@ -63,25 +64,25 @@ Admin can:
 
 ## 📡 API Endpoints
 Auth:
-**POST**  api/v1/auth/signup
-**POST**  api/v1/auth/signin
+- **POST**  `api/v1/auth/signup`
+- **POST**  `api/v1/auth/signin`
 
 Users:
-**GET**  api/v1/users
-**PUT**  api/v1/users/:userId
-**DELETE**  api/v1/users/:userId
+- **GET**  `api/v1/users`
+- **PUT**  `api/v1/users/:userId`
+- **DELETE**  `api/v1/users/:userId`
 
 Vehicles:
-**POST**  api/v1/vehicles
-**GET**  api/v1/vehicles
-**GET**  api/v1/vehicles/:vehicleId
-**PUT**  api/v1/vehicles/:vehicleId
-**DELETE**  api/v1/vehicles/:vehicleId
+- **POST**  `api/v1/vehicles`
+- **GET**  `api/v1/vehicles`
+- **GET**  `api/v1/vehicles/:vehicleId`
+- **PUT**  `api/v1/vehicles/:vehicleId`
+- **DELETE**  `api/v1/vehicles/:vehicleId`
 
 Bookings:
-**POST**  api/v1/bookings
-**GET**  api/v1/bookings
-**PUT**  api/v1/bookings/:bookingId
+- **POST**  `api/v1/bookings`
+- **GET**  `api/v1/bookings`
+- **PUT**  `api/v1/bookings/:bookingId`
 
 ---
 
@@ -98,11 +99,11 @@ Customer:
  User Password: 12345
 ```
 
-Live Link: https://l2-assignment02.vercel.app
-Github Repo Link: https://github.com/ALHriday/car_rental_management_server
+**Live Link**: https://l2-assignment02.vercel.app<br>
+**Github Repo Link**: https://github.com/ALHriday/car_rental_management_server<br>
 
 
 ## 👨‍💻 Author
-#### Alauddin Hriday
-Passionate Full Stack Developer
+### Alauddin Hriday
+Passionate Full Stack Developer<br>
 Focused on scalable backend architecture & clean code.
