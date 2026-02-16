@@ -38,7 +38,7 @@ const deleteVehicle = async (vehicleId: string) => {
     const bookingCheck = await pool.query(`SELECT * FROM bookings WHERE vehicle_id = $1 AND status = 'active'`, [vehicleId]);
 
     if (bookingCheck.rows.length) {
-        throw new Error("Vehicle han an active booking!");
+        throw new Error("Vehicle has an active booking!");
     }
 
     const result = await pool.query(
